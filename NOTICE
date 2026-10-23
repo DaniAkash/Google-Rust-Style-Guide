@@ -3,9 +3,4 @@ Copyright 2026 Dani Akash
 
 This project is not affiliated with, endorsed by, or maintained by Google.
 
-The rules this project enforces are derived from the Google Rust Style Guide,
-https://google.github.io/styleguide/rustguide.html, which is published by
-Google under the Creative Commons Attribution 3.0 License
-(https://creativecommons.org/licenses/by/3.0/). Rule descriptions in this
-repository are paraphrased summaries written for this project; refer to the
-original guide for the authoritative wording.
+The rules this project enforces are derived from the Google Rust Style Guide (https://google.github.io/styleguide/rustguide.html), which Google publishes under the Creative Commons Attribution 3.0 License (https://creativecommons.org/licenses/by/3.0/). Rule descriptions in this repository are paraphrased summaries written for this project; refer to the original guide for the authoritative wording.
