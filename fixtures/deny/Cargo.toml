@@ -1,0 +1,9 @@
+[package]
+name = "deny-fixture"
+version = "0.1.0"
+description = "Depends on a crate that runs code before main(). `cargo deny check bans` must reject it."
+edition = "2024"
+publish = false
+
+[dependencies]
+ctor = "0.2"
