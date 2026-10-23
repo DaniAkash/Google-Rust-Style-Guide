@@ -16,11 +16,10 @@ starlight-file-tree .comment {
   color: var(--sl-color-gray-2);
 }
 
-/* Homepage: the agent path is the recommended way in, so it gets an accent-framed panel. */
+/* Homepage: a quiet card frames the recommended agent path; the badge carries the accent. */
 .agent-panel {
-  border: 1px solid var(--sl-color-accent);
+  border: 1px solid var(--sl-color-gray-5);
   border-radius: 0.75rem;
-  background: color-mix(in srgb, var(--sl-color-accent-low) 45%, transparent);
   padding: 1.25rem 1.5rem;
 }
 
