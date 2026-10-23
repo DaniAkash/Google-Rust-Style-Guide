@@ -1,0 +1,115 @@
+# Copy the `[workspace.lints.*]` tables into your workspace root `Cargo.toml`, then add
+# `[lints] workspace = true` to every member crate. A single-crate project pastes the same
+# tables as `[lints.rust]`, `[lints.rustdoc]` and `[lints.clippy]`.
+#
+# Each lint names the guide section it enforces. docs/coverage.md maps every section.
+# Guide: https://google.github.io/styleguide/rustguide.html
+
+[workspace]
+resolver = "3"
+members = ["example"]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.95"
+license = "Apache-2.0"
+publish = false
+
+[workspace.lints.rust]
+# #when-and-how-to-write-documentation
+missing_docs = "warn"
+# #unsafe-code
+unsafe_op_in_unsafe_fn = "warn"
+# #no-unstable-features
+unstable_features = "deny"
+
+[workspace.lints.rustdoc]
+# #when-and-how-to-write-documentation
+broken_intra_doc_links = "warn"
+
+[workspace.lints.clippy]
+# Clippy's default groups (correctness, suspicious, style, complexity, perf) stay on.
+# Pedantic, restriction and nursery lints are opted into one at a time below.
+all = { level = "warn", priority = -1 }
+
+# ---- Code organization ----
+# #dont-use-glob-imports
+wildcard_imports = "warn"
+# #qualify-calls-to-top-level-functions-with-a-module-name and
+# #type-names-should-be-imported-and-used-unqualified
+absolute_paths = "warn"
+
+# ---- Code formatting and aesthetics ----
+# #use-the-appropriate-formatting-tool (escape invisible characters in literals)
+invisible_characters = "deny"
+
+# ---- Ownership and borrowing ----
+# #prefer-borrows-over-deep-copies
+redundant_clone = "warn"
+implicit_clone = "warn"
+needless_pass_by_value = "warn"
+
+# ---- Function inputs and outputs ----
+# #accept-flexible-references-for-immutable-data
+ptr_arg = "warn"
+borrowed_box = "warn"
+ref_option = "warn"
+# #prefer-enum-over-bool-in-apis (threshold in clippy.toml)
+fn_params_excessive_bools = "warn"
+struct_excessive_bools = "warn"
+
+# ---- Traits ----
+# #implement-known-standard-library-traits-instead-of-custom-methods
+should_implement_trait = "warn"
+inherent_to_string = "warn"
+from_over_into = "warn"
+# #use-derive-if-possible
+derivable_impls = "warn"
+expl_impl_clone_on_copy = "warn"
+# #specific-guidance-for-important-traits (Default when there is a `new()`)
+new_without_default = "warn"
+
+# ---- Naming ----
+# #naming-methods
+wrong_self_convention = "warn"
+# #naming-initialization-functions
+new_ret_no_self = "warn"
+
+# ---- Documentation ----
+# #when-and-how-to-write-documentation
+missing_panics_doc = "warn"
+missing_errors_doc = "warn"
+missing_safety_doc = "warn"
+doc_markdown = "warn"
+
+# ---- Other Rust features ----
+# #unsafe-code
+undocumented_unsafe_blocks = "warn"
+unnecessary_safety_comment = "warn"
+# #implement-expected-api-sets-together
+len_without_is_empty = "warn"
+# #apply-non_exhaustive-to-publicly-exposed-enums
+exhaustive_enums = "warn"
+# #apply-non_exhaustive-to-public-structs-with-public-fields
+exhaustive_structs = "warn"
+# #must_use-on-functions
+must_use_candidate = "warn"
+# #avoid-rc-and-arc, #handling-poison, #dont-call-paniccatch_unwind (lists in clippy.toml)
+disallowed_types = "warn"
+disallowed_methods = "warn"
+
+# ---- Implementation concerns ----
+# #prefer-pattern-matching-over-check-then-unwrap
+unnecessary_unwrap = "warn"
+# #prefer-expect-over-unwrap
+unwrap_used = "warn"
+# #use-context-strings-to-clarify-assertions
+missing_assert_message = "warn"
+# #dont-use-iterator-combinator-chains-when-direct-iteration-is-clearer
+needless_for_each = "warn"
+# #prefer-format--write-for-concatenation-and-substitution
+format_push_string = "warn"
+
+# ---- Exceptions explain themselves ----
+# Every deviation from the guide is `#[expect(clippy::lint, reason = "...")]`.
+allow_attributes_without_reason = "warn"
