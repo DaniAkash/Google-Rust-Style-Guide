@@ -6,15 +6,16 @@ head:
   - tag: title
     content: "Google Rust Style Guide Kit: rustfmt, Clippy and AGENTS.md Configs"
 hero:
-  tagline: Drop-in rustfmt, clippy and cargo-deny configuration, AGENTS.md for coding agents, and a human review guide for Google's Rust style guide. Adopt it in five minutes.
+  tagline: Drop-in rustfmt, clippy and cargo-deny configuration, AGENTS.md for coding agents, and a human review guide for Google's Rust style guide. Hand one prompt to your coding agent, or set it up yourself in five minutes.
   image:
     file: ../../assets/logo.svg
   actions:
+    - text: Set up with your agent
+      link: /Google-Rust-Style-Guide/#try-it-now
+      icon: rocket
     - text: Quick start
       link: /Google-Rust-Style-Guide/quick-start/
       icon: right-arrow
-    - text: What gets enforced
-      link: /Google-Rust-Style-Guide/coverage/
       variant: minimal
     - text: GitHub
       link: https://github.com/DaniAkash/Google-Rust-Style-Guide
@@ -22,9 +23,41 @@ hero:
       variant: minimal
 ---
 
-import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { Aside, Badge, Card, CardGrid, LinkCard, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
 
 ## Try it now
+
+<Tabs syncKey="setup-path">
+<TabItem label="Let your agent do it" icon="rocket">
+
+<div class="agent-panel">
+
+<Badge text="Recommended" size="medium" />
+
+**One prompt, zero config work.** Your coding agent downloads the configs, turns on the lints, runs fmt, clippy and cargo-deny, and fixes your code until everything is green.
+
+<Steps>
+
+1. **Copy the prompt**
+
+   ```text title="Prompt" wrap
+   Apply the Google Rust Style Guide kit to this repository.
+   Follow the instructions at
+   https://daniakash.github.io/Google-Rust-Style-Guide/_llms-txt/for-coding-agents.txt
+   Then run cargo +nightly fmt, cargo clippy --workspace --all-targets -- -D warnings,
+   and cargo deny check bans, and fix what they report without editing the lint configuration.
+   ```
+
+2. **Paste it into your agent** from your project root. Works with Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot and any agent that can run commands.
+
+3. **Review the diff.** Expect new config files, lint tables in `Cargo.toml`, and fixes in your code. The lint configuration itself should match the [downloaded files](/Google-Rust-Style-Guide/config/cargo-lints/) exactly.
+
+</Steps>
+
+</div>
+
+</TabItem>
+<TabItem label="Do it yourself" icon="seti:rust">
 
 Run this in a single-crate Cargo project. It adds five files, turns on the lints, and shows you what the guide flags. Existing files are never overwritten.
 
@@ -38,6 +71,9 @@ cargo clippy --all-targets
 ```
 
 Using a workspace, or want each step explained? The [quick start](/Google-Rust-Style-Guide/quick-start/) walks through it in four steps with the expected output.
+
+</TabItem>
+</Tabs>
 
 ## Every rule has exactly one home
 

@@ -15,3 +15,21 @@
 starlight-file-tree .comment {
   color: var(--sl-color-gray-2);
 }
+
+/* Homepage: the agent path is the recommended way in, so it gets an accent-framed panel. */
+.agent-panel {
+  border: 1px solid var(--sl-color-accent);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--sl-color-accent-low) 45%, transparent);
+  padding: 1.25rem 1.5rem;
+}
+
+.agent-panel > :first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 50rem) {
+  .agent-panel {
+    padding: 1rem;
+  }
+}
