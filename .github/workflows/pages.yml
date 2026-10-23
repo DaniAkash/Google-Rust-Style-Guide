@@ -28,10 +28,9 @@ on:
       - .github/workflows/pages.yml
   workflow_dispatch:
 
+# Builds run code from pull requests, so only the deploy job gets Pages write access.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages-${{ github.ref }}
@@ -55,6 +54,9 @@ jobs:
     if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
