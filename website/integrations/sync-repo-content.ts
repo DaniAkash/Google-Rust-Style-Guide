@@ -9,7 +9,6 @@ import { BASE, GUIDE_URL, REPO_URL, SITE_URL } from '../site.config';
 const siteRoot = fileURLToPath(new URL('..', import.meta.url));
 const repoRoot = path.resolve(siteRoot, '..');
 const generatedDocsDir = path.join(siteRoot, 'src/content/docs/repo');
-const generatedSnippetsDir = path.join(siteRoot, 'src/generated');
 const publicFilesDir = path.join(siteRoot, 'public/files');
 const siteOnlyPages: Record<string, string> = {
   '': 'website/src/content/docs/index.mdx',
@@ -42,15 +41,13 @@ export function lastModifiedBySlug(url: string): string | undefined {
 }
 
 function syncAll() {
-  for (const dir of [generatedDocsDir, generatedSnippetsDir, publicFilesDir]) {
+  for (const dir of [generatedDocsDir, publicFilesDir]) {
     fs.rmSync(dir, { recursive: true, force: true });
     fs.mkdirSync(dir, { recursive: true });
   }
 
   const workspaceLints = extractWorkspaceLints();
   const crateLints = toCrateLints(workspaceLints);
-  writeFile(path.join(generatedSnippetsDir, 'workspace-lints.toml'), workspaceLints);
-  writeFile(path.join(generatedSnippetsDir, 'crate-lints.toml'), crateLints);
   writeFile(path.join(publicFilesDir, 'workspace-lints.toml'), workspaceLints);
   writeFile(path.join(publicFilesDir, 'crate-lints.toml'), crateLints);
   for (const file of downloadableFiles) {

@@ -2,5 +2,4 @@ dist/
 .astro/
 node_modules/
 src/content/docs/repo/
-src/generated/
 public/files/

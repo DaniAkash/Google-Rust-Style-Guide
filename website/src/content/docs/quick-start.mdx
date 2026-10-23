@@ -8,39 +8,13 @@ sidebar:
   order: 1
 ---
 
-import { Aside, Code, FileTree, LinkCard, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
-import workspaceLints from '../../generated/workspace-lints.toml?raw';
-import crateLints from '../../generated/crate-lints.toml?raw';
-import { FILES_URL, RUST_VERSION, BASE } from '../../../site.config';
-
-export const downloadFiles = `base=${FILES_URL}
-for f in rustfmt.toml clippy.toml deny.toml rust-toolchain.toml AGENTS.md; do
-  if [ -e "$f" ]; then echo "skipped $f (already exists)"; else curl -fsSLO "$base/$f"; fi
-done`;
-
-export const appendWorkspaceLints = `curl -fsSL ${FILES_URL}/workspace-lints.toml >> Cargo.toml`;
-
-export const appendCrateLints = `curl -fsSL ${FILES_URL}/crate-lints.toml >> Cargo.toml`;
-
-export const memberOptIn = `# Run from the workspace root. Adjust crates/* to where your members live.
-for member in crates/*/Cargo.toml; do
-  printf '\\n[lints]\\nworkspace = true\\n' >> "$member"
-done`;
-
-export const verify = `cargo +nightly fmt
-cargo clippy --workspace --all-targets -- -D warnings
-cargo deny check bans`;
-
-export const agentPrompt = `Apply the Google Rust Style Guide kit to this repository.
-Follow the instructions at
-https://daniakash.github.io/Google-Rust-Style-Guide/_llms-txt/for-coding-agents.txt
-Then run cargo +nightly fmt, cargo clippy --workspace --all-targets -- -D warnings,
-and cargo deny check bans, and fix what they report without editing the lint configuration.`;
+import { Aside, FileTree, LinkCard, CardGrid, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+import { BASE } from '../../../site.config';
 
 You'll end up with Google's Rust style guide enforced by your formatter, linter and dependency checker, plus instructions your coding agent reads automatically. It takes about five minutes.
 
 <Aside type="tip" title="Before you start">
-You need Rust {RUST_VERSION} or newer on the stable channel (`rustup update stable`) and an existing Cargo project. Nothing here changes your code; it only adds config files.
+You need Rust 1.95 or newer on the stable channel (`rustup update stable`) and an existing Cargo project. Nothing here changes your code; it only adds config files.
 </Aside>
 
 <Tabs syncKey="setup-path">
@@ -52,7 +26,12 @@ You need Rust {RUST_VERSION} or newer on the stable channel (`rustup update stab
 
    Run this from your project root. Files you already have are skipped, never overwritten.
 
-   <Code code={downloadFiles} lang="sh" title="Terminal" />
+   ```sh title="Terminal"
+   base=https://daniakash.github.io/Google-Rust-Style-Guide/files
+   for f in rustfmt.toml clippy.toml deny.toml rust-toolchain.toml AGENTS.md; do
+     if [ -e "$f" ]; then echo "skipped $f (already exists)"; else curl -fsSLO "$base/$f"; fi
+   done
+   ```
 
    <FileTree>
    - your-project/
@@ -72,38 +51,40 @@ You need Rust {RUST_VERSION} or newer on the stable channel (`rustup update stab
    <Tabs syncKey="project-shape">
    <TabItem label="Single crate">
 
-   Append the lint tables to your `Cargo.toml`:
+   **Single crate:** append the lint tables to your `Cargo.toml`.
 
-   <Code code={appendCrateLints} lang="sh" title="Terminal" />
+   ```sh title="Terminal"
+   curl -fsSL https://daniakash.github.io/Google-Rust-Style-Guide/files/crate-lints.toml >> Cargo.toml
+   ```
 
-   <details>
-   <summary>See what gets added</summary>
-
-   <Code code={crateLints} lang="toml" title="Cargo.toml (appended)" />
-
-   </details>
+   See exactly what gets added on the [Cargo.toml lints](/Google-Rust-Style-Guide/config/cargo-lints/) page.
 
    </TabItem>
    <TabItem label="Workspace">
 
-   Append the lint tables to your **workspace root** `Cargo.toml`:
+   **Workspace:** append the lint tables to your workspace root `Cargo.toml`.
 
-   <Code code={appendWorkspaceLints} lang="sh" title="Terminal" />
+   ```sh title="Terminal"
+   curl -fsSL https://daniakash.github.io/Google-Rust-Style-Guide/files/workspace-lints.toml >> Cargo.toml
+   ```
 
    Then opt every member crate in by adding these two lines to its `Cargo.toml`:
 
-   <Code code={'[lints]\nworkspace = true'} lang="toml" title="crates/<member>/Cargo.toml" />
+   ```toml title="crates/<member>/Cargo.toml"
+   [lints]
+   workspace = true
+   ```
 
    Or do all members at once:
 
-   <Code code={memberOptIn} lang="sh" title="Terminal" />
+   ```sh title="Terminal"
+   # Run from the workspace root. Adjust crates/* to where your members live.
+   for member in crates/*/Cargo.toml; do
+     printf '\n[lints]\nworkspace = true\n' >> "$member"
+   done
+   ```
 
-   <details>
-   <summary>See what gets added</summary>
-
-   <Code code={workspaceLints} lang="toml" title="Cargo.toml (appended)" />
-
-   </details>
+   See exactly what gets added on the [Cargo.toml lints](/Google-Rust-Style-Guide/config/cargo-lints/) page.
 
    </TabItem>
    </Tabs>
@@ -116,7 +97,9 @@ You need Rust {RUST_VERSION} or newer on the stable channel (`rustup update stab
 
    Codex, Cursor, Gemini CLI, GitHub Copilot and most other agents read `AGENTS.md` automatically. Claude Code reads `CLAUDE.md`, so link it:
 
-   <Code code="ln -s AGENTS.md CLAUDE.md" lang="sh" title="Terminal" />
+   ```sh title="Terminal"
+   ln -s AGENTS.md CLAUDE.md
+   ```
 
    If step 1 skipped `AGENTS.md` because you already have one, paste the [kit's AGENTS.md](/Google-Rust-Style-Guide/agents-md/) into it as a "Rust style" section.
 
@@ -124,11 +107,18 @@ You need Rust {RUST_VERSION} or newer on the stable channel (`rustup update stab
 
    Install nightly rustfmt (for three of the guide's formatting options) and cargo-deny once:
 
-   <Code code={'rustup toolchain install nightly --profile minimal --component rustfmt\ncargo install --locked cargo-deny'} lang="sh" title="Terminal (one time)" />
+   ```sh title="Terminal (one time)"
+   rustup toolchain install nightly --profile minimal --component rustfmt
+   cargo install --locked cargo-deny
+   ```
 
    Then run the three checks:
 
-   <Code code={verify} lang="sh" title="Terminal" />
+   ```sh title="Terminal"
+   cargo +nightly fmt
+   cargo clippy --workspace --all-targets -- -D warnings
+   cargo deny check bans
+   ```
 
    A brand-new `cargo new --lib` project shows three warnings. That's the kit working:
 
@@ -164,7 +154,13 @@ You need Rust {RUST_VERSION} or newer on the stable channel (`rustup update stab
 
 Paste this into Claude Code, Codex, Cursor or any coding agent that can run commands:
 
-<Code code={agentPrompt} lang="text" title="Prompt" />
+```text title="Prompt"
+Apply the Google Rust Style Guide kit to this repository.
+Follow the instructions at
+https://daniakash.github.io/Google-Rust-Style-Guide/_llms-txt/for-coding-agents.txt
+Then run cargo +nightly fmt, cargo clippy --workspace --all-targets -- -D warnings,
+and cargo deny check bans, and fix what they report without editing the lint configuration.
+```
 
 The linked file bundles this quick start, the kit's `AGENTS.md`, the adoption guide and every config file, so the agent has everything in one request.
 
@@ -212,7 +208,7 @@ jobs:
 | You see | Why | Do this |
 |---|---|---|
 | ``Warning: can't set `hex_literal_case = Lower`, unstable features are only available in nightly channel.`` | Three of the guide's rustfmt options only exist on nightly rustfmt | Run `cargo +nightly fmt`. On stable the warning is harmless and the other options still apply. |
-| ``unknown lint: `clippy::...` `` | Your toolchain is older than the kit's tested Rust {RUST_VERSION} | `rustup update stable` |
+| ``unknown lint: `clippy::...` `` | Your toolchain is older than the kit's tested Rust 1.95 | `rustup update stable` |
 | ``cannot override `workspace.lints` in `lints` `` | A member crate has both `[lints] workspace = true` and its own `[lints.*]` tables | Keep `workspace = true` and relax a lint at the crate root instead: `#![expect(clippy::lint_name, reason = "...")]` |
 | `duplicate key` in `Cargo.toml` | Your `Cargo.toml` already had lint tables | Merge the appended tables into the existing ones by hand |
 | ``error: no such command: `deny` `` | cargo-deny is a separate tool | `cargo install --locked cargo-deny` (or `brew install cargo-deny`) |

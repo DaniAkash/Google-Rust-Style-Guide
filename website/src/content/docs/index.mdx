@@ -22,21 +22,20 @@ hero:
       variant: minimal
 ---
 
-import { Aside, Card, CardGrid, Code, LinkCard } from '@astrojs/starlight/components';
-import { FILES_URL } from '../../../site.config';
-
-export const tryIt = `base=${FILES_URL}
-for f in rustfmt.toml clippy.toml deny.toml rust-toolchain.toml AGENTS.md; do
-  if [ -e "$f" ]; then echo "skipped $f (already exists)"; else curl -fsSLO "$base/$f"; fi
-done
-curl -fsSL "$base/crate-lints.toml" >> Cargo.toml   # workspaces: see the quick start
-cargo clippy --all-targets`;
+import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 ## Try it now
 
 Run this in a single-crate Cargo project. It adds five files, turns on the lints, and shows you what the guide flags. Existing files are never overwritten.
 
-<Code code={tryIt} lang="sh" title="Terminal" />
+```sh title="Terminal"
+base=https://daniakash.github.io/Google-Rust-Style-Guide/files
+for f in rustfmt.toml clippy.toml deny.toml rust-toolchain.toml AGENTS.md; do
+  if [ -e "$f" ]; then echo "skipped $f (already exists)"; else curl -fsSLO "$base/$f"; fi
+done
+curl -fsSL "$base/crate-lints.toml" >> Cargo.toml   # workspaces: see the quick start
+cargo clippy --all-targets
+```
 
 Using a workspace, or want each step explained? The [quick start](/Google-Rust-Style-Guide/quick-start/) walks through it in four steps with the expected output.
 
