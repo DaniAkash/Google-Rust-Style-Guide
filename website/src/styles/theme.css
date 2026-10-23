@@ -15,3 +15,20 @@
 starlight-file-tree .comment {
   color: var(--sl-color-gray-2);
 }
+
+/* Homepage: a quiet card frames the recommended agent path; the badge carries the accent. */
+.agent-panel {
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+}
+
+.agent-panel > :first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 50rem) {
+  .agent-panel {
+    padding: 1rem;
+  }
+}
