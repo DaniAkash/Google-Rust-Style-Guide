@@ -1,0 +1,63 @@
+name: Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - website/**
+      - docs/**
+      - AGENTS.md
+      - README.md
+      - Cargo.toml
+      - clippy.toml
+      - rustfmt.toml
+      - deny.toml
+      - rust-toolchain.toml
+      - .github/workflows/pages.yml
+  pull_request:
+    paths:
+      - website/**
+      - docs/**
+      - AGENTS.md
+      - README.md
+      - Cargo.toml
+      - clippy.toml
+      - rustfmt.toml
+      - deny.toml
+      - rust-toolchain.toml
+      - .github/workflows/pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build website
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Full history: page dates and sitemap <lastmod> come from git log.
+          fetch-depth: 0
+      - uses: withastro/action@v6
+        with:
+          path: website
+
+  deploy:
+    name: Deploy to GitHub Pages
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
