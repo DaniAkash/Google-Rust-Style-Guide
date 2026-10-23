@@ -42,7 +42,7 @@ No. It is an unofficial community project, not affiliated with or endorsed by Go
 
 ## How do I remove it?
 
-Delete `rustfmt.toml`, `clippy.toml`, `deny.toml`, `rust-toolchain.toml` and `AGENTS.md` (and a `CLAUDE.md` link if you made one), then remove the lint tables from `Cargo.toml`. The [quick start](/Google-Rust-Style-Guide/quick-start/#remove-the-kit) shows the exact commands.
+Revert the commit that added it, or run the removal script in the [quick start](/Google-Rust-Style-Guide/quick-start/#remove-the-kit). The script deletes only config files that are still identical to the kit's versions, so your own files are never touched. Then remove the lint tables from `Cargo.toml`.
 
 ## How is the kit kept correct?
 

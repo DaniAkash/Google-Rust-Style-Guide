@@ -217,13 +217,22 @@ jobs:
 
 ## Remove the kit
 
-Changed your mind? Delete the five files and the lint tables:
+Changed your mind? If you added the kit in its own commit, reverting that commit is the cleanest way out. Otherwise, run this from your project root. It only deletes files that are still identical to the kit's versions, so your own config files and any you edited are kept:
 
 ```sh title="Terminal"
-rm rustfmt.toml clippy.toml deny.toml rust-toolchain.toml AGENTS.md CLAUDE.md
+base=https://daniakash.github.io/Google-Rust-Style-Guide/files
+for f in rustfmt.toml clippy.toml deny.toml rust-toolchain.toml AGENTS.md; do
+  if [ -f "$f" ] && curl -fsSL "$base/$f" | cmp -s - "$f"; then rm "$f"; echo "removed $f"
+  elif [ -e "$f" ]; then echo "kept $f (not the kit's version)"; fi
+done
+if [ -L CLAUDE.md ] && [ "$(readlink CLAUDE.md)" = AGENTS.md ] && [ ! -e AGENTS.md ]; then rm CLAUDE.md; fi
 ```
 
-Then remove everything from the `# Google Rust Style Guide lints` comment to the end of your `Cargo.toml`, and the `[lints] workspace = true` lines from member crates.
+Then finish by hand:
+
+- In `Cargo.toml`, delete everything from the `# Google Rust Style Guide lints` comment to the end of the file, and remove `[lints] workspace = true` from member crates if you added it.
+- If you pasted the kit's rules into an existing `AGENTS.md` instead of downloading it, delete that section.
+- Files reported as "kept" are either yours or edited since you downloaded them. Remove them only if you are sure.
 
 ## Next steps
 
