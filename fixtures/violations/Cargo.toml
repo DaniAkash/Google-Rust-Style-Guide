@@ -1,0 +1,11 @@
+[package]
+name = "violations"
+version = "0.1.0"
+description = "Deliberate style guide violations. CI asserts that every annotated lint fires."
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
