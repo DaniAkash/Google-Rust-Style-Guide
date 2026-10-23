@@ -5,6 +5,8 @@
 
 Drop-in configuration that makes [Google's Rust style guide](https://google.github.io/styleguide/rustguide.html) enforceable: **rustfmt, clippy and cargo-deny** for the mechanical rules, **`AGENTS.md`** for coding agents, and a **human review guide** for everything that needs judgment.
 
+**Website: <https://daniakash.github.io/Google-Rust-Style-Guide/>**, with a [five-minute quick start](https://daniakash.github.io/Google-Rust-Style-Guide/quick-start/), every doc, and [`llms.txt`](https://daniakash.github.io/Google-Rust-Style-Guide/llms.txt) for coding agents.
+
 > This is an unofficial community project. It is not affiliated with, endorsed by, or maintained by Google. The style guide itself belongs to Google and is published under CC-BY 3.0; see [NOTICE](NOTICE).
 
 ## Why
@@ -43,7 +45,7 @@ cargo clippy --workspace --all-targets -- -D warnings
 cargo deny check bans
 ```
 
-Single crates, CI wiring, existing codebases and application crates are covered in [docs/adopting.md](docs/adopting.md).
+Single crates, CI wiring, existing codebases and application crates are covered in [docs/adopting.md](docs/adopting.md). The [website quick start](https://daniakash.github.io/Google-Rust-Style-Guide/quick-start/) has copyable commands for each case and a one-prompt setup for coding agents.
 
 ## What's inside
 
@@ -58,6 +60,7 @@ Single crates, CI wiring, existing codebases and application crates are covered 
 | [`docs/`](docs/README.md) | How it works, coverage, why, why not, human review guide, adoption |
 | [`example/`](example/src) | A small library that follows the guide and passes every lint, including recorded exceptions |
 | [`fixtures/`](fixtures) + [`scripts/`](scripts) | Deliberate violations that CI uses to prove every lint still fires |
+| [`website/`](website) | The Astro + Starlight site, built from the files above and deployed to GitHub Pages |
 
 ## Exceptions are written down, not hidden
 
