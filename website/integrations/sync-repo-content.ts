@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { AstroIntegration } from 'astro';
 import { contentMap, downloadableFiles, type ConfigEntry, type ContentEntry } from '../content-map';
-import { BASE, REPO_URL, SITE_URL } from '../site.config';
+import { BASE, GUIDE_URL, REPO_URL, SITE_URL } from '../site.config';
 
 const siteRoot = fileURLToPath(new URL('..', import.meta.url));
 const repoRoot = path.resolve(siteRoot, '..');
@@ -132,15 +132,17 @@ function rewriteTarget(target: string, source: string): string | undefined {
 
 function extractWorkspaceLints(): string {
   const cargo = fs.readFileSync(path.join(repoRoot, 'Cargo.toml'), 'utf8');
-  const start = cargo.indexOf('[workspace.lints');
+  const start = cargo.search(/^\[workspace\.lints\./m);
   if (start === -1) throw new Error('Cargo.toml has no [workspace.lints] tables to publish');
   const header = [
     '',
     `# Google Rust Style Guide lints (unofficial kit): ${SITE_URL}`,
     '# Paste into your workspace root Cargo.toml, then add `[lints] workspace = true` to each member.',
     '',
+    '',
   ].join('\n');
-  return `${header}${cargo.slice(start).trimEnd()}\n`;
+  const tables = cargo.slice(start).replace(/^# #([\w-]+)/gm, `# ${GUIDE_URL}#$1`);
+  return `${header}${tables.trimEnd()}\n`;
 }
 
 function toCrateLints(workspaceLints: string): string {

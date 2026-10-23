@@ -1,7 +1,73 @@
 ---
-title: Google Rust Style Guide Kit
-description: Unofficial kit that enforces Google's Rust style guide with rustfmt, clippy, cargo-deny, AGENTS.md for coding agents, and a human review guide.
+title: Google Rust Style Guide, enforced
+description: Unofficial kit that enforces Google's Rust style guide with rustfmt, clippy and cargo-deny configs, AGENTS.md for coding agents, and a human review guide. Adopt it in 5 minutes.
 template: splash
+head:
+  - tag: title
+    content: "Google Rust Style Guide Kit: rustfmt, Clippy and AGENTS.md Configs"
+hero:
+  tagline: Drop-in rustfmt, clippy and cargo-deny configuration, AGENTS.md for coding agents, and a human review guide for Google's Rust style guide. Adopt it in five minutes.
+  image:
+    file: ../../assets/logo.svg
+  actions:
+    - text: Quick start
+      link: /Google-Rust-Style-Guide/quick-start/
+      icon: right-arrow
+    - text: What gets enforced
+      link: /Google-Rust-Style-Guide/coverage/
+      variant: minimal
+    - text: GitHub
+      link: https://github.com/DaniAkash/Google-Rust-Style-Guide
+      icon: external
+      variant: minimal
 ---
 
-Work in progress.
+import { Aside, Card, CardGrid, Code, LinkCard } from '@astrojs/starlight/components';
+import { FILES_URL } from '../../../site.config';
+
+export const tryIt = `base=${FILES_URL}
+for f in rustfmt.toml clippy.toml deny.toml rust-toolchain.toml AGENTS.md; do
+  if [ -e "$f" ]; then echo "skipped $f (already exists)"; else curl -fsSLO "$base/$f"; fi
+done
+curl -fsSL "$base/crate-lints.toml" >> Cargo.toml   # workspaces: see the quick start
+cargo clippy --all-targets`;
+
+## Try it now
+
+Run this in a single-crate Cargo project. It adds five files, turns on the lints, and shows you what the guide flags. Existing files are never overwritten.
+
+<Code code={tryIt} lang="sh" title="Terminal" />
+
+Using a workspace, or want each step explained? The [quick start](/Google-Rust-Style-Guide/quick-start/) walks through it in four steps with the expected output.
+
+## Every rule has exactly one home
+
+[Google's Rust style guide](https://google.github.io/styleguide/rustguide.html) mixes mechanical rules with design judgment. The kit gives each rule to the cheapest layer that can hold it.
+
+<CardGrid>
+  <Card title="Tools enforce" icon="approve-check">
+    rustfmt, 41 clippy and rustc lints, and cargo-deny cover **32 of 62** in-scope rules. CI blocks the merge.
+  </Card>
+  <Card title="Agents follow" icon="rocket">
+    `AGENTS.md` teaches Claude Code, Codex, Cursor and others the judgment rules no linter can check.
+  </Card>
+  <Card title="Humans review" icon="open-book">
+    A review guide covers what is left: API shape, ownership design and whether each exception is justified.
+  </Card>
+  <Card title="Exceptions are written down" icon="pencil">
+    Allowed deviations become `#[expect(lint, reason = "...")]` at the exact spot, so reviewers can judge them.
+  </Card>
+</CardGrid>
+
+## Start here
+
+<CardGrid>
+  <LinkCard title="Quick start" description="Five minutes from zero to a green cargo clippy." href="/Google-Rust-Style-Guide/quick-start/" />
+  <LinkCard title="Coverage" description="Every guide section and the check that enforces it." href="/Google-Rust-Style-Guide/coverage/" />
+  <LinkCard title="AGENTS.md" description="The rules your coding agent should follow." href="/Google-Rust-Style-Guide/agents-md/" />
+  <LinkCard title="Human review guide" description="What to check once CI is green." href="/Google-Rust-Style-Guide/human-review/" />
+</CardGrid>
+
+<Aside type="note" title="Unofficial">
+This is a community project. It is not affiliated with, endorsed by, or maintained by Google. The [style guide itself](https://google.github.io/styleguide/rustguide.html) is published by Google under CC-BY 3.0.
+</Aside>

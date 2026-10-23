@@ -19,7 +19,7 @@ export default defineConfig({
       sidebar: [
         {
           label: 'Start',
-          items: [{ slug: 'adopting' }],
+          items: [{ slug: 'quick-start' }, { slug: 'adopting' }],
         },
         {
           label: 'Concepts',
