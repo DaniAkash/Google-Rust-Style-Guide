@@ -1,5 +1,7 @@
 import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
+import mermaid from 'astro-mermaid';
+import starlightLinksValidator from 'starlight-links-validator';
 import { syncRepoContent } from './integrations/sync-repo-content';
 import { BASE, REPO_URL, SITE } from './site.config';
 
@@ -9,6 +11,7 @@ export default defineConfig({
   trailingSlash: 'always',
   integrations: [
     syncRepoContent(),
+    mermaid({ autoTheme: true }),
     starlight({
       title: 'Google Rust Style Guide Kit',
       description:
@@ -16,6 +19,12 @@ export default defineConfig({
       logo: { src: './src/assets/logo.svg' },
       social: [{ icon: 'github', label: 'GitHub', href: REPO_URL }],
       lastUpdated: true,
+      components: { Footer: './src/components/Footer.astro' },
+      plugins: [
+        starlightLinksValidator({
+          exclude: [`${BASE}/files/**`, `${BASE}/og/**`, `${BASE}/**/*.md`, `${BASE}/llms*.txt`, `${BASE}/_llms-txt/**`],
+        }),
+      ],
       sidebar: [
         {
           label: 'Start',

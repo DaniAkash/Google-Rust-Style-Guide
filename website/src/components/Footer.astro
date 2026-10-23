@@ -1,0 +1,19 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+import { GUIDE_URL } from '../../site.config';
+---
+
+<Default><slot /></Default>
+<p class="disclaimer">
+  Unofficial community project, not affiliated with or endorsed by Google. The
+  <a href={GUIDE_URL}>Google Rust Style Guide</a> is published by Google under CC-BY 3.0. This kit
+  is Apache-2.0.
+</p>
+
+<style>
+  .disclaimer {
+    margin-top: 1.5rem;
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-3);
+  }
+</style>
