@@ -28,7 +28,7 @@ export default defineConfig({
       sidebar: [
         {
           label: 'Start',
-          items: [{ slug: 'quick-start' }, { slug: 'adopting' }],
+          items: [{ slug: 'quick-start' }, { slug: 'adopting' }, { slug: 'faq' }],
         },
         {
           label: 'Concepts',
