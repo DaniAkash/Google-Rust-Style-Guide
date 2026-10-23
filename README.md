@@ -30,6 +30,22 @@ The rule-by-rule map is in [docs/coverage.md](docs/coverage.md).
 
 ## Quick start
 
+### Let your agent do it (recommended)
+
+Paste this prompt into Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot or any coding agent that can run commands, from your project root:
+
+```text
+Apply the Google Rust Style Guide kit to this repository.
+Follow the instructions at
+https://daniakash.github.io/Google-Rust-Style-Guide/_llms-txt/for-coding-agents.txt
+Then run cargo +nightly fmt, cargo clippy --workspace --all-targets -- -D warnings,
+and cargo deny check bans, and fix what they report without editing the lint configuration.
+```
+
+The agent downloads the configs, turns on the lints, runs fmt, clippy and cargo-deny, and fixes your code until everything is green. Review the diff afterwards: expect new config files, lint tables in `Cargo.toml` and fixes in your code, while the lint configuration itself should match this repository's files exactly.
+
+### Do it yourself
+
 ```sh
 base=https://raw.githubusercontent.com/DaniAkash/Google-Rust-Style-Guide/main
 for file in rustfmt.toml clippy.toml deny.toml rust-toolchain.toml AGENTS.md; do
@@ -45,7 +61,7 @@ cargo clippy --workspace --all-targets -- -D warnings
 cargo deny check bans
 ```
 
-Single crates, CI wiring, existing codebases and application crates are covered in [docs/adopting.md](docs/adopting.md). The [website quick start](https://daniakash.github.io/Google-Rust-Style-Guide/quick-start/) has copyable commands for each case and a one-prompt setup for coding agents.
+Single crates, CI wiring, existing codebases and application crates are covered in [docs/adopting.md](docs/adopting.md). The [website quick start](https://daniakash.github.io/Google-Rust-Style-Guide/quick-start/) has copyable commands for each case.
 
 ## What's inside
 
