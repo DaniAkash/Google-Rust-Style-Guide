@@ -120,15 +120,15 @@ You need Rust 1.95 or newer on the stable channel (`rustup update stable`) and a
    cargo deny check bans
    ```
 
-   A brand-new `cargo new --lib` project shows three warnings. That's the kit working:
+   Expect a few errors on a brand-new project. `-D warnings` turns every lint warning into an error, which is the kit doing its job. A fresh `cargo new --lib` reports three:
 
    ```text title="cargo clippy output"
-   warning: this function could have a `#[must_use]` attribute
-   warning: missing documentation for the crate
-   warning: missing documentation for a function
+   error: this function could have a `#[must_use]` attribute
+   error: missing documentation for the crate
+   error: missing documentation for a function
    ```
 
-   Fixing them takes three lines:
+   Fixing them takes three lines (a binary crate only needs the `//!` line in `src/main.rs`):
 
    ```diff lang="rust" title="src/lib.rs"
    +//! Adds numbers.
