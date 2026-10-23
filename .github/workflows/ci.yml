@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Weekly, so a new stable clippy that changes lint behavior shows up here first.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  lints:
+    name: Clippy, tests and lint fixtures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install the pinned stable toolchain
+        run: rustup show active-toolchain || rustup toolchain install
+      - name: Example crate passes every lint
+        run: cargo clippy --package example --all-targets -- -D warnings
+      - name: Tests
+        run: cargo test --workspace
+      - name: Violations fixture triggers exactly the marked lints
+        run: scripts/check-fixtures.sh
+
+  format:
+    name: rustfmt (nightly)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install nightly rustfmt
+        run: rustup toolchain install nightly --profile minimal --component rustfmt
+      - name: Workspace is formatted
+        run: cargo +nightly fmt --check
+      - name: rustfmt fixture matches
+        run: scripts/check-rustfmt.sh
+
+  deny:
+    name: cargo-deny bans
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-deny
+      - name: Workspace passes and the ctor fixture is rejected
+        run: scripts/check-deny.sh
