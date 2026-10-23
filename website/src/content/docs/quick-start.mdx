@@ -162,7 +162,7 @@ Then run cargo +nightly fmt, cargo clippy --workspace --all-targets -- -D warnin
 and cargo deny check bans, and fix what they report without editing the lint configuration.
 ```
 
-The linked file bundles this quick start, the kit's `AGENTS.md`, the adoption guide and every config file, so the agent has everything in one request.
+The linked file bundles this quick start, the kit's `AGENTS.md`, the adoption guide and an explanation of each config file, so the agent learns the whole setup in one request and then downloads the files themselves.
 
 <Aside type="caution" title="Review the diff">
 Agents sometimes silence a warning by editing the lint configuration. The kit's `AGENTS.md` forbids that, but check that `Cargo.toml` lint tables, `clippy.toml`, `rustfmt.toml` and `deny.toml` match the downloaded versions.

@@ -10,3 +10,8 @@
   --sl-color-accent: #c2410c;
   --sl-color-accent-high: #7c2d12;
 }
+
+/* Starlight's file tree comments sit just under WCAG AA contrast (4.48:1) on the dark code background. */
+starlight-file-tree .comment {
+  color: var(--sl-color-gray-2);
+}
