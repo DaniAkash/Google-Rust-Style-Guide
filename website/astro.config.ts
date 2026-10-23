@@ -23,6 +23,7 @@ export default defineConfig({
       social: [{ icon: 'github', label: 'GitHub', href: REPO_URL }],
       lastUpdated: true,
       components: { Footer: './src/components/Footer.astro' },
+      routeMiddleware: './src/route-middleware.ts',
       plugins: [
         starlightLinksValidator({
           exclude: [`${BASE}/files/**`, `${BASE}/og/**`, `${BASE}/**/*.md`, `${BASE}/llms*.txt`, `${BASE}/_llms-txt/**`],
