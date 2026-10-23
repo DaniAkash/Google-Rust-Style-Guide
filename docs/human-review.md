@@ -41,7 +41,7 @@ For each suppression, judge the reason against the guide:
 | `disallowed_methods` (`catch_unwind`) | Defense in depth at an entry point, in a codebase that already avoids panics, built with `panic=unwind` | Using it for control flow or to recover from expected errors |
 | `disallowed_methods` (poison) | Essentially never | Any |
 | `wildcard_imports` | `use super::*` in a non-test inline module; merging C++ interop namespaces privately | Third-party preludes without discussion (the guide leaves those to the reviewer) |
-| `must_use_candidate` | The return value is genuinely optional (a fluent setter returning `&mut Self`) | Silencing it across a whole module |
+| `must_use_candidate` | Rare: the lint only fires on functions without mutable inputs, where ignoring the result is almost always a bug | Silencing it across a whole module |
 | `unwrap_used` | None outside tests; use `expect` with a reason instead | Any |
 | `redundant_clone` | A real false positive the author can explain | "Clippy is wrong" with no explanation |
 | `absolute_paths` | Ambiguous common names, macros, generated code | Laziness about adding a `use` |
