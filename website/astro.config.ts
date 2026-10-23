@@ -24,12 +24,14 @@ export default defineConfig({
       lastUpdated: true,
       components: { Footer: './src/components/Footer.astro' },
       routeMiddleware: './src/route-middleware.ts',
+      customCss: ['./src/styles/theme.css'],
       plugins: [
         starlightLinksValidator({
           exclude: [`${BASE}/files/**`, `${BASE}/og/**`, `${BASE}/**/*.md`, `${BASE}/llms*.txt`, `${BASE}/_llms-txt/**`],
         }),
         // No baseUrl: with it, this plugin writes its own llms.txt over starlight-llms-txt's.
         starlightPageActions({
+          prompt: 'Read {url} and help me apply the Google Rust Style Guide kit to my Rust project.',
           actions: { chatgpt: true, claude: true, perplexity: true, cursor: true, markdown: true },
         }),
         starlightLlmsTxt({
